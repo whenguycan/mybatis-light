@@ -30,17 +30,17 @@ public class Toolkit {
 		SqlCommandType sqlCommandType = getSqlCommandType(qualifiedId);
 		List<SqlNode> sqlNodeList = new ArrayList<>();
 		if(sqlCommandType == SqlCommandType.SELECT) {
-			/* select a, b from table where a = 1 and b = 2 */
+			/* done select a, b from table where a = 1 and b = 2 */
 			sqlNodeList.add(new TextSqlNode(" SELECT"));
 			sqlNodeList.add(getColumnsSqlNode(configuration, domainClass));
 			sqlNodeList.add(new TextSqlNode(" FROM " + table.value()));
 			sqlNodeList.add(getConditionSqlNode(configuration, qualifiedId, domainClass));
 		}else if(sqlCommandType == SqlCommandType.INSERT) {
-			/* insert into table (a, b) values (1, 3) */
+			/* todo insert into table (a, b) values (1, 3) */
 		}else if(sqlCommandType == SqlCommandType.UPDATE) {
-			/* update table set a = 1, b = 2 where a = 1 and b = 2 */
+			/* todo update table set a = 1, b = 2 where a = 1 and b = 2 */
 		}else if(sqlCommandType == SqlCommandType.DELETE) {
-			/* delete from table where a in (1, 2) */
+			/* todo delete from table where a in (1, 2) */
 		}
 		return new MixedSqlNode(sqlNodeList);
 	}
