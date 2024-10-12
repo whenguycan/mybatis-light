@@ -1,0 +1,2 @@
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+  com.daoketa.mybatis.light.autoconfigure.MybatisLightAutoConfiguration
