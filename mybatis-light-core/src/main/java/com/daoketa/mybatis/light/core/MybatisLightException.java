@@ -13,4 +13,8 @@ public class MybatisLightException extends Exception {
 		super(message);
 	}
 	
+	public MybatisLightException(Throwable cause) {
+		super(cause);
+	}
+	
 }

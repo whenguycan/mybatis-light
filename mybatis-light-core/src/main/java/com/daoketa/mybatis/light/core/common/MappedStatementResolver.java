@@ -1,6 +1,10 @@
-package com.daoketa.mybatis.light.core;
+package com.daoketa.mybatis.light.core.common;
 
-import lombok.Builder;
+import com.daoketa.mybatis.light.core.BaseMapper;
+import com.daoketa.mybatis.light.core.MybatisLightException;
+import com.daoketa.mybatis.light.core.MybatisLightProperties;
+import com.daoketa.mybatis.light.core.StatementPolicy;
+import com.daoketa.mybatis.light.core.provider.RootSqlNodeProvider;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.ibatis.session.Configuration;
 import org.springframework.core.ResolvableType;
@@ -9,15 +13,13 @@ import java.lang.reflect.Method;
 import java.util.*;
 
 /**
+ * core logic of add default {@link org.apache.ibatis.mapping.MappedStatement} to {@link Configuration}
  * @author wangcy 2024/9/29 15:46
  */
 @Slf4j
-@Builder
 public class MappedStatementResolver {
 
-	MybatisLightProperties mybatisLightProperties;
-	
-	public void resolve(Configuration configuration) throws MybatisLightException {
+	public void resolve(Configuration configuration, MybatisLightProperties mybatisLightProperties, List<RootSqlNodeProvider> providerList) throws MybatisLightException {
 		StatementPolicy statementPolicy = mybatisLightProperties.getStatementPolicy();
 		final Set<String> mappedStatementNameSet = new HashSet<>(configuration.getMappedStatementNames());
 		for(Class<?> mapperClass : configuration.getMapperRegistry().getMappers()) {
@@ -42,7 +44,7 @@ public class MappedStatementResolver {
 					}
 					if(generate) {
 						Class<?> domainClass = ResolvableType.forType(mapperClass).getInterfaces()[0].getGeneric(0).getRawClass();
-						configuration.addMappedStatement(Toolkit.createMappedStatement(configuration, qualifiedId, domainClass));
+						configuration.addMappedStatement(Toolkit.createMappedStatement(new Ctx.Builder(configuration, qualifiedId, domainClass).build(), providerList));
 					}
 				}
 			}
